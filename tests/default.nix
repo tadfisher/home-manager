@@ -90,6 +90,7 @@ import nmt {
     ./modules/programs/autorandr
     ./modules/programs/firefox
     ./modules/programs/getmail
+    ./modules/programs/gnome-shell
     ./modules/programs/i3status-rust
     ./modules/programs/ncmpcpp-linux
     ./modules/programs/neovim   # Broken package dependency on Darwin.

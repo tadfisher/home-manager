@@ -1852,6 +1852,26 @@ in
           A new module is available: 'programs.sbt'.
         '';
       }
+
+      {
+        time = "2021-02-13T00:00:57+00:00";
+        message = ''
+          A new module is available: 'xdg.systemDirs'. Options are:
+
+          - xdg.systemDirs.config
+
+            Extra directory names to add to $XDG_CONFIG_DIRS in the user
+            session.
+
+          - xdg.systemDirs.data
+
+            Extra directory names to add to $XDG_DATA_DIRS in the user
+            session.
+
+          These variables are visible in both systemd user services and
+          login shells.
+        '';
+      }
     ];
   };
 }

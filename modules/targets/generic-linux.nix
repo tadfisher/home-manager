@@ -4,9 +4,19 @@ with lib;
 
 let
 
+  cfg = config.targets.genericLinux;
+
   profileDirectory = config.home.profileDirectory;
 
 in {
+  imports = [
+    (mkRenamedOptionModule [ "targets" "genericLinux" "extraXdgDataDirs" ] [
+      "xdg"
+      "systemDirs"
+      "data"
+    ])
+  ];
+
   options.targets.genericLinux = {
     enable = mkEnableOption "" // {
       description = ''
@@ -14,25 +24,13 @@ in {
         GNU/Linux distributions other than NixOS.
       '';
     };
-
-    extraXdgDataDirs = mkOption {
-      type = types.listOf types.str;
-      default = [ ];
-      example = [ "/usr/share" "/usr/local/share" ];
-      description = ''
-        List of directory names to add to <envar>XDG_DATA_DIRS</envar>.
-      '';
-    };
   };
 
-  config = mkIf config.targets.genericLinux.enable {
-    home.sessionVariables = let
+  config = mkIf cfg.enable {
+    xdg.systemDirs.data = let
       profiles =
         [ "\${NIX_STATE_DIR:-/nix/var/nix}/profiles/default" profileDirectory ];
-      dataDirs = concatStringsSep ":"
-        (map (profile: "${profile}/share") profiles
-          ++ config.targets.genericLinux.extraXdgDataDirs);
-    in { XDG_DATA_DIRS = "${dataDirs}\${XDG_DATA_DIRS:+:}$XDG_DATA_DIRS"; };
+    in map (profile: "${profile}/share") profiles;
 
     home.sessionVariablesExtra = ''
       . "${pkgs.nix}/etc/profile.d/nix.sh"
